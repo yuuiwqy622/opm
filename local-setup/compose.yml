@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  opm-db:
+    image: postgres:16.2
+    container_name: opm-db
+    env_file:
+      - db.env
+    network_mode: host
+
+  opm-be:
+    image: node:21.7
+    command: sh -c 'yarn && yarn build && yarn server'
+    container_name: opm-be
+    network_mode: host
+    volumes:
+      - ..:/opm
+    working_dir: /opm/backend
+
+  opm-fe:
+    image: node:21.7
+    command: sh -c 'yarn && yarn start'
+    container_name: opm-fe
+    network_mode: host
+    volumes:
+      - ..:/opm
+    working_dir: /opm/frontend
